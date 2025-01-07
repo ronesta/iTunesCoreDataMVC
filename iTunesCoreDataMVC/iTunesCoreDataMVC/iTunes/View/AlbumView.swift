@@ -1,18 +1,16 @@
 //
-//  AlbumViewController.swift
+//  AlbumView.swift
 //  iTunesCoreDataMVC
 //
-//  Created by Ибрагим Габибли on 30.12.2024.
+//  Created by Ибрагим Габибли on 07.01.2025.
 //
 
 import Foundation
 import UIKit
 import SnapKit
 
-final class AlbumViewController: UIViewController {
-    var album: AlbumModel?
-
-    private let albumImageView: UIImageView = {
+final class AlbumView: UIView {
+    let albumImageView: UIImageView = {
         let image = UIImageView()
         image.layer.cornerRadius = 15
         image.clipsToBounds = true
@@ -20,7 +18,7 @@ final class AlbumViewController: UIViewController {
         return image
     }()
 
-    private let albumNameLabel: UILabel = {
+    let albumNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 20)
         label.numberOfLines = 3
@@ -28,34 +26,38 @@ final class AlbumViewController: UIViewController {
         return label
     }()
 
-    private let artistNameLabel: UILabel = {
+    let artistNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18)
         label.textColor = .systemGray
         return label
     }()
 
-    private let collectionPriceLabel: UILabel = {
+    let collectionPriceLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18)
         label.textColor = .systemOrange
         return label
     }()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupViews()
-        setupAlbum()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     private func setupViews() {
-        view.addSubview(albumImageView)
-        view.addSubview(albumNameLabel)
-        view.addSubview(artistNameLabel)
-        view.addSubview(collectionPriceLabel)
+        addSubview(albumImageView)
+        addSubview(albumNameLabel)
+        addSubview(artistNameLabel)
+        addSubview(collectionPriceLabel)
+        backgroundColor = .white
 
         albumImageView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(safeAreaLayoutGuide)
             make.centerX.equalToSuperview()
             make.height.width.equalTo(200)
         }
@@ -77,21 +79,4 @@ final class AlbumViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
     }
-
-    private func setupAlbum() {
-        guard let album else {
-            return
-        }
-
-        guard let imageData = CoreDataManager.shared.fetchImageData(forImageId: Int(album.artistId)),
-              let image = UIImage(data: imageData) else {
-            return
-        }
-
-        albumImageView.image = image
-        albumNameLabel.text = album.collectionName
-        artistNameLabel.text = album.artistName
-        collectionPriceLabel.text = "\(album.collectionPrice) $"
-    }
 }
-
