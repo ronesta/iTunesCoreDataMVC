@@ -85,4 +85,3 @@ final class AlbumCollectionViewCell: UICollectionViewCell {
         artistNameLabel.text = album.artistName
     }
 }
-

@@ -98,9 +98,8 @@ extension SearchViewController: UISearchBarDelegate {
         guard let searchTerm = searchBar.text, !searchTerm.isEmpty else {
             return
         }
+
         CoreDataManager.shared.saveSearchTerm(searchTerm)
         searchAlbums(with: searchTerm)
     }
 }
-
-
